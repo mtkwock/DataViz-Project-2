@@ -1,7 +1,5 @@
 window.addEventListener("load", run);
 
-var data;
-
 function run() {
     var updateType1 = function () {
         type1(document.getElementById("changeCategoryType1").value,
@@ -91,15 +89,17 @@ var type1 = function (demographic, website) {
 var type2 = function (category) {
     var svg = d3.select("#viz2");
     d3.selectAll("#viz2 > *").remove();
-    var maxDiameter = 80;
-    var internalRadius = maxDiameter * 0.84;
-    var externalRadius = maxDiameter * 2.5;
-    var externalVerticalScale = 0.60;
+    var w = svg.attr("width");
+    var h = svg.attr("height");
+    var maxDiameter = w * 0.12;
+    var internalRadius = maxDiameter;
+    var externalRadius = w * 0.25;
+    var externalVerticalScale = h / w * 0.9;
     var pi2 = 2 * Math.PI;
-    var padding = 2;
+    var padding = maxDiameter * 0.02;
     var center = {
-        x: svg.attr("width") / 2,
-        y: svg.attr("height") / 2
+        x: w * 0.5,
+        y: h * 0.5
     }
     var siteStatic = {
         facebook: {
@@ -161,10 +161,10 @@ var type2 = function (category) {
     });
 
     basicText.unshift({
-        text: "Percentage of Users by " + category + " using Social Networking",
-        size: 25,
+        text: "Comparison of Social Networking Sites by " + category[0].toUpperCase() + category.substr(1),
+        size: 24,
         x: 0,
-        y: -210
+        y: h * -0.43
     });
 
     var highest = data.reduce(function (a, b) { // Used to normalize bubble size
