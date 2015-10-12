@@ -1,0 +1,17 @@
+.bartext {
+    text-anchor: middle;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 16;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(181, 127, 127, 0.10);
+    color: cyan;
+    border-radius: 2px;
+    font-family: sans-serif;
+    text-align: center;
+}
