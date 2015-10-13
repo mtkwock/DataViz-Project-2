@@ -16,19 +16,26 @@
 </head>
 
 <body style="background: #2C2C2C;">
-    <div>
+    <ul class="tabs">
+      <li id="tab1"><a href="#type1">Demographics by Site</a></li>
+      <li id="tab2"><a href="#type2">Sites by Demographic</a></li>
+    </ul>
+
+    <div class="tabContent">
+
+    <div id="type1">
         <svg id="viz" height="500" width="700" style="border: 2px solid white;"></svg>
         <p>
             <select name="" id="changeCategoryType1">
-                <option value="all">All</option>
-                <option selected="true" value="gender">Gender</option>
+                <option selected="true" value="all">Race</option>
+                <option value="gender">Gender</option>
                 <option value="age">Age</option>
                 <option value="education">Education</option>
                 <option value="income">Income</option>
                 <option value="location">Location</option>
             </select>
             <select name="" id="changeSiteType1">
-                <option value="facebook">FaceBook</option>
+                <option value="facebook">Facebook</option>
                 <option value="pinterest">Pinterest</option>
                 <option value="instagram">Instagram</option>
                 <option value="linkedin">LinkedIn</option>
@@ -36,7 +43,8 @@
             </select>
         </p>
     </div>
-    <div>
+
+    <div  id="type2">
         <svg id="viz2" height="500" width="700" style="border: 2px solid white;"></svg>
         <p>
             <select name="" id="changeCategoryType2">
@@ -49,9 +57,9 @@
             </select>
         </p>
     </div>
-    <style>
 
-    </style>
+    </div>
+    
 </body>
 
 </html>

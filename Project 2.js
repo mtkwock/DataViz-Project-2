@@ -13,11 +13,12 @@ function run() {
     type1("race", "facebook");
     type2("gender");
 
+    initTabs();
 }
 
 var type1 = function (demographic, website) {
-    demographic = demographic || "race";
-    website = website || "facebook";
+    demographic = demographic;
+    website = website;
 
     var data = getDataRows(demographic, website);
 
@@ -28,13 +29,23 @@ var type1 = function (demographic, website) {
     var height = svg.attr("height");
     var width = svg.attr("width");
 
-    // the chart lives in the svg surrounded by a margin of 75px
+    // the chart lives in the svg surrounded by a margin of 66px
     var margin = 66;
     var chartHeight = height - 2 * margin;
     var chartWidth = width - 2 * margin;
 
-    // figure out the width of the bars so that all bars fit and there's a bar width
-    // between them note that every data point now has _2_ bars associated with it
+    svg.append("text")
+      .attr("x",width/2)
+      .attr("y",25)
+      .attr("dy","0.3em")
+      .style("text-anchor","middle")
+      .style("font-family","monospace")
+      .style("font-size","20px")
+      .style("fill","cyan")
+      .style("font-weight", "bold")
+      .text("Percentage of Users by " + demographic[0].toUpperCase() + demographic.substr(1) + " using "+ website[0].toUpperCase() + website.substr(1))
+
+    // figure out the width of the bars so that all bars fit
     var barWidth = chartWidth / (1.25 * data.length - .25);
 
     var color = ["lightgrey", "cyan", "magenta", "yellow"];
@@ -46,13 +57,11 @@ var type1 = function (demographic, website) {
         var yPos = height - margin - barHeight;
 
         // create bar & value text add some styles to make it pretty too
-
         svg.append("rect")
             .attr("x", margin + (i * 1.25) * barWidth)
             .attr("y", yPos)
             .attr("width", barWidth)
             .attr("height", barHeight)
-            //.style("stroke","black")
             .style("stroke-width", "2px")
             .style("fill", color[i]);
 
@@ -76,10 +85,6 @@ var type1 = function (demographic, website) {
             .style("font-size", "16px")
             .style("fill", color[i])
             .text(v.group)
-            //.valign("top")
-            //.width(barWidth);
-
-        //.container(d3.select("#rectWrap"))
     });
 };
 
@@ -89,6 +94,7 @@ var type1 = function (demographic, website) {
 var type2 = function (category) {
     var svg = d3.select("#viz2");
     d3.selectAll("#viz2 > *").remove();
+
     var w = svg.attr("width");
     var h = svg.attr("height");
     var maxDiameter = w * 0.12;
@@ -101,6 +107,7 @@ var type2 = function (category) {
         x: w * 0.5,
         y: h * 0.5
     }
+
     var siteStatic = {
         facebook: {
             link: "http://www.blueye.com/img/footer/facebook-logo.svg",
@@ -137,6 +144,7 @@ var type2 = function (category) {
             return acc;
         }, {})
     );
+
     var groupPos = {};
     var del = (groups.length % 2) * Math.PI / 2;
     for (var i = 0; i < groups.length; i++) {
@@ -162,9 +170,9 @@ var type2 = function (category) {
 
     basicText.unshift({
         text: "Comparison of Social Networking Sites by " + category[0].toUpperCase() + category.substr(1),
-        size: 24,
+        size: 20,
         x: 0,
-        y: h * -0.43
+        y: h * -0.48
     });
 
     var highest = data.reduce(function (a, b) { // Used to normalize bubble size
@@ -295,7 +303,7 @@ var type2 = function (category) {
             return dat.x + center.x;
         })
         .attr("y", function (dat) {
-            return dat.y + center.y;
+            return dat.y + center.y + 15;
         })
         .attr("class", "bartext")
         .attr("fill", "cyan")
@@ -304,6 +312,51 @@ var type2 = function (category) {
         });
 };
 
+
+function initTabs() {
+    document.getElementById('tab1').onclick=function(){
+        document.getElementById('type1').style.display = "block";
+        document.getElementById('type2').style.display = "none";
+        return false;
+    }
+
+    document.getElementById('tab2').onclick=function(){
+        document.getElementById('type2').style.display = "block";
+        document.getElementById('type1').style.display = "none";
+        return false;
+    }
+
+    document.getElementById('type2').style.display = "none";
+    }
+
+function showTab() {
+    console.log("HERE");
+    function getHash( url ) {
+      var hashPos = url.lastIndexOf ( '#' );
+      return url.substring( hashPos + 1 );
+    }
+
+    var selectedId = getHash( this.getAttribute('href') );
+    console.log(selectedId);
+    document.getElementById(selectedId).style.display = "block";
+
+      // Highlight the selected tab, and dim all others.
+      // Also show the selected content div, and hide all others.
+      for ( var id in contentDivs ) {
+        if ( id == selectedId ) {
+          tabLinks[id].className = 'selected';
+          contentDivs[id].className = 'tabContent';
+          contentDivs[id].className.style.display = "block";
+        } else {
+          tabLinks[id].className = '';
+          contentDivs[id].className.style.display = "none";
+        }
+      }
+
+      // Stop the browser following the link
+      return false;
+    }
+
 /* From
 http://www.pewinternet.org/files/2015/01/PI_SocialMediaUpdate20144.pdf
 */
@@ -311,6 +364,7 @@ http://www.pewinternet.org/files/2015/01/PI_SocialMediaUpdate20144.pdf
 // Note: the data variable is obtained from data.json
 getDataRows = function (category, site) {
     return data.filter(function (row) {
+        //return (!category || row.category === category || row.category === "all") && (!site || row.site === site);
         return (!category || row.category === category) && (!site || row.site === site);
     });
 };
