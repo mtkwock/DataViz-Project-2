@@ -71,6 +71,7 @@ var type1 = function (demographic, website) {
             .attr("dy", "0.3em")
             .attr("class", "bartext")
             .style("fill", color[i])
+            .style("font-size", "18px")
             .text(v.value + "%");
     });
 
